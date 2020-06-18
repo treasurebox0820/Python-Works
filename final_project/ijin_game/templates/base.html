@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <title>{% block title %}{% endblock %}</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {% load static %}
+    <!-- CSSの読み込み -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/common.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/loading.css' %}" />
+
+    <!-- fontの読み込み -->
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Noto+Sans+JP&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@900&display=swap" rel="stylesheet">
+
+    <!-- jQueryの読み込み -->
+    <script src="https://code.jquery.com/jquery-3.5.0.js"
+        integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
+        integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/redmond/jquery-ui.css">
+
+    <!-- 独自JavaScriptの読み込み -->
+    <!-- <script type="text/javascript" src="{% static 'js/dummy.js' %}"></script> -->
+</head>
+
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+
+</html>

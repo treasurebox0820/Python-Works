@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ゲーム説明
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<form action="" method="get">
+    {% csrf_token %}
+    <header>
+        <a href="./"><img src="{% static 'images/title-head.png' %}" alt="Youは何する偉人さん？"></a>
+        <ul class="header-nav">
+            <!--<li class="arrow"><input type="button" name="how_to_play" value="ゲーム説明"></li>-->
+            <!--<li class="arrow"><input type="button" name="logout" value="ログアウト"></li>-->
+        </ul>
+    </header>
+
+    <section id="howtoplay">
+        <div class="section-title">
+            <img src="{% static 'images/howtoplay-title.png' %}" alt="ゲーム説明">
+        </div>
+        <main>
+            <p class="Welcome-copy">Welcome to「Youは何した偉人さん？」<br>このゲームはあなたがどんな偉人に似ているか判定するゲームです。</p>
+            <input id="step2" type="checkbox">
+            <input id='step3' type='checkbox'>
+            <input id='step4' type='checkbox'>
+            <div id="part1" class="form-group">
+                <div class="dl-wrap">
+                    <dl>
+                        <dt><p class="step-label"><span>STEP.1</span></p></dt>
+                        <dd>新規登録しましょう。</dd>
+                    </dl>
+                </div>
+                <div class="btn-group-first" role="group" aria-label="...">
+                    <label for='step2' id="continue-step2" class="continue">
+                        <p class="step-arrow" role="button">STEP.2へ</p>
+                    </label>
+                </div>
+            </div>
+            <div id="part2" class="form-group">
+                <div class="dl-wrap">
+                    <dl>
+                        <dt><p class="step-label"><span>STEP.2</span></p></dt>
+                        <dd>カメラを見ながら【写真撮影】→【写真アップロード】→【写真登録】選択しましょう。</dd>
+                    </dl>
+                    <p class="step-notice">※ローカル写真について：ローカルに写真を保存している場合、【ファイル選択】→【ファイル登録】選択しましょう。</p>
+                    <p class="step-notice">※写真について：顔全体から、正面、あご上げ、あご下げ、首振り45°程度、左右正面、あご上げ、あご下げ、から写真を撮りましょう。</p>
+                </div>
+                <div class="btn-group-first" role="group" aria-label="...">
+                    <label for='step3' id="continue-step3" class="continue">
+                        <p class="step-arrow" role="button">STEP.3へ</p>
+                    </label>
+                </div>
+            </div>
+            <div id="part3" class="form-group">
+                <div class="dl-wrap">
+                    <dl>
+                        <dt><p class="step-label"><span>STEP.3</span></p></dt>
+                        <dd>【偉人になる】選択すると、あなたに似た偉人が表示されます。次にその偉人の生涯等知っていることを入力し高い点数を目指しましょう。</dd>
+                    </dl>
+                    <p class="step-notice">※書き込み回数について：勉強を重ね偉人の歴史を知りつつ、何度も書き込む事ができます。</p>
+                    <p class="step-notice">※高い点数について：偉人の歴史を知り、より多く生涯のキーワードまたは物語を書き込むとで高い点数になれます。</p>
+                </div>
+                
+                <div class="btn-group-first" role="group" aria-label="...">
+                    <label for='step4' id="continue-step4" class="continue">
+                        <p class="step-arrow" role="button">STEP.4へ</p>
+                    </label>
+                </div>
+            </div>
+            <div id="part4" class="form-group">
+                <div class="dl-wrap">
+                    <dl>
+                        <dt><p class="step-label"><span>STEP.4</span></p></dt>
+                        <dd>マイページで【ランキング】を確認しましょう。</dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="button-wrap">
+                <input type="button" name="return_mypage" value="マイページへ戻る" class="back-btn">
+                <!--<input type="image" src="{% static 'images/button-mypage.png' %}" name="return_mypage" value="マイページへ">-->
+                <input type="button" name="return" value="戻る" class="back-btn">
+            </div>
+        </main>
+    </section>
+</form>
+<!--
+<main>
+    <p>ゲーム説明画面</p>
+    <form action="" method="post">
+        {% csrf_token %}
+
+        <input type="button" name="return_mypage" value="マイページへ戻る">
+        <input type="button" name="return" value="戻る">
+    </form>
+</main>
+-->
+
+<script>
+    $(function () {
+        // 遷移元画面によってボタンの表示非表示を切り替える
+         var ref = document.referrer
+         if (ref.match(/mypage$/g)) {
+             $("[name=return_mypage]").show();
+             $("[name=return]").hide();
+         } else {
+             $("[name=return_mypage]").hide();
+             $("[name=return]").show();
+         }
+
+        // 押下されたボタンによってform の action 先を動的に変更する
+        $("[name=return_mypage]").click(function () {
+            $("form").attr("action", "{% url 'mypage' %}");
+            $("form").submit();
+        })
+
+        $("[name=return]").click(function () {
+            history.back()
+        })
+
+        $("[name=logout]").click(function () {
+            $("form").attr("action", "{% url 'logout' %}");
+            $("form").submit();
+        })
+    })
+</script>
+{% endblock %}

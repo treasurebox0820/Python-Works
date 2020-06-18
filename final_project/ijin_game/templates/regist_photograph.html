@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+
+{% block title %}
+写真登録
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<div class="overlay">
+    {% include 'loading_parts.html' %}
+</div>
+
+<form action="" method="post">
+    {% csrf_token %}
+    <header>
+        <a href="./"><img src="{% static 'images/title-head.png' %}" alt="Youは何する偉人さん？"></a>
+        <ul class="header-nav">
+            <li class="arrow"><input type="button" name="how_to_play" value="ゲーム説明"></li>
+        </ul>
+    </header>
+</form>
+<section id="regist_photograph">
+    <div class="section-title">
+        <img src="{% static 'images/registphoto-title.png' %}" alt="写真登録">
+    </div>
+    <main>
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p class="notice">顔の正面・右・左・上・下を撮影します。{{ form.errors }}</p>
+            <div class="photo-upload-container">
+                <video id="camera" width="140" height="140"></video>
+                <div class="photo-upload-shooting">
+                    <ul>
+                        <li>
+                            <div class="step">STEP&nbsp;<span class="circle">1</span></div><button type="button"
+                                id="shutter" class="btn-square">写真撮影</button>
+                        </li>
+                        <li class="arrow">
+                            <div class="step">STEP&nbsp;<span class="circle">2</span></div><button type="button"
+                                id="upload_photo" class="btn-square">写真アップロード</button>
+                        </li>
+                        <li class="arrow">
+                            <div class="step">STEP&nbsp;<span class="circle">3</span></div><input type="button"
+                                name="regist_photo" value="写真登録" class="btn-square">
+                        </li>
+                    </ul>
+                    <div class="photo-upload-files">
+                        {{ form.image_url }}
+                        <input type="button" name="regist_image_file" value="ファイル登録" class="btn-ellipse">
+                    </div>
+                </div>
+            </div>
+            <div class="shooting-area">
+                <canvas id="face01" class="picture" width="108" height="108"></canvas>
+                <canvas id="face02" class="picture" width="108" height="108"></canvas>
+                <canvas id="face03" class="picture" width="108" height="108"></canvas>
+                <canvas id="face04" class="picture" width="108" height="108"></canvas>
+                <canvas id="face05" class="picture" width="108" height="108"></canvas>
+                <canvas id="face06" class="picture" width="108" height="108"></canvas>
+                <canvas id="face07" class="picture" width="108" height="108"></canvas>
+                <canvas id="face08" class="picture" width="108" height="108"></canvas>
+                <canvas id="face09" class="picture" width="108" height="108"></canvas>
+                <canvas class="picture" width="108" height="108"></canvas>
+            </div>
+            <audio id="se" preload="auto">
+                <source src="{% static 'audios/camera-shutter1.mp3' %}" type="audio/mp3">
+            </audio>
+        </form>
+    </main>
+</section>
+
+<!--<main>
+    <p>写真登録画面</p>
+
+    <div><video id="camera" width="150" height="150"></video></div>
+    <div>
+        <canvas class="picture" width="150" height="150"></canvas>
+        <canvas class="picture" width="150" height="150"></canvas>
+        <canvas class="picture" width="150" height="150"></canvas>
+        <canvas class="picture" width="150" height="150"></canvas>
+        <canvas class="picture" width="150" height="150"></canvas>
+        <canvas class="picture" width="150" height="150"></canvas>
+        <canvas class="picture" width="150" height="150"></canvas>
+        <canvas class="picture" width="150" height="150"></canvas>
+        <canvas class="picture" width="150" height="150"></canvas>
+        <canvas class="picture" width="150" height="150"></canvas>
+    </div>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        //ファイルを選択してアップロード 
+        <div class="image_file_upload">
+            {{ form.image_url }}
+            <input type="button" name="regist_image_file" value="ファイル登録">
+        </div>
+
+        //写真を撮影してアップロード 
+        <div class="teke_photo_upload">
+            <button type="button" id="shutter">写真撮影</button>
+            <button type="button" id="upload_photo">写真アップロード</button>
+            <input type="button" name="regist_photo" value="写真登録">
+        </div>
+
+        //その他ボタン 
+        <div class="other_buttons">
+            <input type="button" name="return" value="戻る">
+        </div>
+    </form>
+
+    <div class="message">
+        {{ form.image_url.errors }}
+    </div>
+
+    <audio id="se" preload="auto">
+        <source src="{% static 'audios/camera-shutter1.mp3' %}" type="audio/mp3">
+    </audio>
+</main>
+-->
+
+<script src="{% static 'js/regist_photograph.js' %}"></script>
+<script>
+    $(function () {
+        // 初期表示ではオーバーレイを非表示とする
+        $('.overlay').css({
+            'display': 'none',
+            'z-index': -1
+        });
+
+        // ajax通信のセットアップ
+        ajaxSetup();
+
+        // カメラ撮影のセットアップ
+        var settings = cameraSetup();
+
+        // ファイル選択ボタン押下
+        $(document).on('change', 'input[type="file"]', function () {
+            // ファイルを選択したら写真撮影での登録を行えないようにする
+            $("#shutter").prop("disabled", true);
+            $("#upload_photo").prop("disabled", true);
+            $("[name=regist_photo]").prop("disabled", true);
+        })
+
+        // ファイル登録ボタン押下
+        $("[name=regist_image_file]").click(function () {
+            // オーバーレイを表示してローディングサークルを表示する
+            $('.overlay').css({
+                'display': 'block',
+                'z-index': 2147483647
+            });
+
+            $("form").attr("action", "{% url 'regist_image_file' %}");
+            $("form").submit();
+        })
+
+        // 写真撮影ボタン押下
+        $("#shutter").click(function () {
+            takePhoto(settings);
+
+            // 写真撮影をしたらファイル選択での登録を行えないようにする
+            $("[name=image_url]").prop("disabled", true);
+            $("[name=regist_image_file]").prop("disabled", true);
+        })
+
+        // 写真アップロードボタン押下
+        $("#upload_photo").click(function () {
+            uploadImageFile("{% url 'ajax_image_upload' %}");
+            $(".message").append("<span>撮影写真のアップロードが完了しました。</span>");
+        });
+
+        // 写真登録ボタン押下
+        $("[name=regist_photo]").click(function () {
+            // オーバーレイを表示してローディングサークルを表示する
+            $('.overlay').css({
+                'display': 'block',
+                'z-index': 2147483647
+            });
+
+            $("form").attr("action", "{% url 'regist_photo_file' %}");
+            $("form").submit();
+        });
+
+        // 戻るボタン押下
+        $("[name=return]").click(function () {
+            history.back();
+        });
+
+        $("[name=how_to_play]").click(function () {
+            $("form").attr("action", "{% url 'how_to_play' %}");
+            $("form").submit();
+        })
+    });
+</script>
+<script>
+    window.onload = () => {
+        // canvas準備
+        const board = document.querySelector("#face01", "#face02");
+        const ctx = board.getContext("2d");
+
+        // 画像読み込み
+        const chara = new Image();
+        chara.src = "/static/images/face_01.png";
+
+        chara.onload = () => {
+            ctx.drawImage(chara, 0, 0);
+        };
+    };
+</script>
+{% endblock %}

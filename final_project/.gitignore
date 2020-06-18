@@ -1,0 +1,8 @@
+# Gitの管理対象外とするファイル
+*.pyc
+
+# Gitの管理対象外とするディレクトリ
+__pycache__
+/.vscode
+/ijin_game/media/cnn_data
+/ijin_game/media/user

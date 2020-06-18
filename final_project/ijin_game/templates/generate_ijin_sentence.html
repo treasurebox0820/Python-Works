@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}
+偉人文章入力
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<div class="overlay">
+    {% include 'loading_parts.html' %}
+</div>
+
+<form action="" method="post">
+    {% csrf_token %}
+    <header>
+        <a href="./"><img src="{% static 'images/title-head.png' %}" alt="Youは何する偉人さん？"></a>
+        <ul class="header-nav">
+            <li class="arrow"><input type="button" name="how_to_play" value="ゲーム説明"></li>
+            <li class="arrow"><input type="button" name="logout" value="ログアウト"></li>
+        </ul>
+    </header>
+    <section id="generate_ijin_sentence">
+        <div class="section-title">
+            <img src="{% static 'images/generatesentence-title.png' %}" alt="ステージ2　知識で勝負」に変更できますか？">
+        </div>
+        <main>
+            <p>
+                <span class="ijin-name">{{ ijin_name }}</span><br><br>
+                <span>のつもりで自分の生涯について知っていることを書いてね！<br>
+                    ※偉人について知っていることが多いほど、スコアが上がるよ</span>
+                <img src="{% static 'images/form-textarea-arrow.png' %}" class="arrow" alt="">
+            </p>
+            {{ form.input_text }}
+            {{ form.input_text.errors }}
+            <div class="button-wrap">
+                <input type="image" src="{% static 'images/button-next.png' %}" name="next" value="次へ">
+            </div>
+        </main>
+    </section>
+</form>
+<!--
+<main>
+    <p>偉人文章入力画面</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>【 {{ ijin_name }} 】について入力してね↓</p><br>
+
+        !-- TODO エラー時に本ページへredirectしてきたときに表示するエラーメッセージ が未実装--
+        !-- （西谷）下記のコードでは表示されなかったため断念。
+        {{form.non_field_errors}}
+        {{ form.input_text }}<br> --
+        {{ form.input_text }}<br>
+        <input type="button" name="next" value="次へ">
+        <input type="button" name="return" value="戻る">
+    </form>
+</main>
+-->
+
+<script>
+    $(function () {
+        // 初期表示ではオーバーレイを非表示とする
+        $('.overlay').css({
+            'display': 'none',
+            'z-index': -1
+        });
+
+        // 押下されたボタンによってform の action 先を動的に変更する
+        $("[name=next]").click(function () {
+            // オーバーレイを表示してローディングサークルを表示する
+            $('.overlay').css({
+                'display': 'block',
+                'z-index': 2147483647
+            });
+
+            $("form").attr("action", "{% url 'result' %}");
+            $("form").submit();
+        })
+
+        $("[name=return]").click(function () {
+            history.back()
+        })
+
+        $("[name=how_to_play]").click(function () {
+            $("form").attr("action", "{% url 'how_to_play' %}");
+            $("form").submit();
+        })
+
+        $("[name=logout]").click(function () {
+            $("form").attr("action", "{% url 'logout' %}");
+            $("form").submit();
+        })
+    })
+</script>
+{% endblock %}

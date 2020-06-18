@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% block title %}
+会員登録
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <header>
+        <a href="./"><img src="{% static 'images/title-head.png' %}" alt="Youは何する偉人さん？"></a>
+        <ul class="header-nav">
+            <li class="arrow"><input type="button" name="how_to_play" value="ゲーム説明"></li>
+            <li class="arrow"><input type="button" name="login" value="ログイン"></li>
+        </ul>
+    </header>
+</form>
+<section id="regist_member">
+    <div class="section-title">
+        <img src="{% static 'images/registmember-title.png' %}" alt="会員登録">
+    </div>
+    <main>
+        <form action="{% url 'regist_member' %}" method="post" autocomplete="off">
+        {% csrf_token %}
+        <input id="step2" type="checkbox">
+        <input id='step3' type='checkbox'>
+        <div class="message">{{form.errors}}</div>
+        <div id="part1" class="form-group">
+            <label><p>{{ form.username.label }}</p> {{ form.username }}</label>
+            <label><p>{{ form.password1.label }}</p> {{ form.password1 }}</label>
+            <label><p>{{ form.password2.label }}</p> {{ form.password2 }}</label>
+            <div class="btn-group-first" role="group" aria-label="...">
+                <label for='step2' id="continue-step2" class="continue">
+                    <div class="btn btn-default btn-success">次へすすむ</div>
+                </label>
+            </div>
+        </div>
+        <div id="part2" class="form-group">
+            <label><p>{{ form.email.label }}</p> {{ form.email }}</label>
+            <label><p>{{ form.nickname.label }}</p> {{ form.nickname }}</label>
+            <div class="btn-group" role="group" aria-label="...">
+                <label for='step2' id="back-step2" class="back">
+                    <div class="btn btn-default btn-primary" role="button">戻る</div>
+                </label>
+                <label for='step3' id="continue-step3" class="continue">
+                    <div class="btn btn-default btn-success" role="button">次へすすむ</div>
+                </label>
+            </div>
+        </div>
+        <div id="part3" class="form-group">
+            <label><p>{{ form.birthdate.label }}</p> {{ form.birthdate }}</label>
+            <label><p>{{ form.belongs_id.label }}</p> {{ form.belongs_id }}</label>
+            <div class="btn-group" role="group" aria-label="...">
+                <label for='step3' id="back-step3" class="back">
+                    <div class="btn btn-default btn-primary">戻る</div>
+                </label>
+                <div class="button-wrap">
+                    <input type="image" src="{% static 'images/button-submit.png' %}" name="regist" value="登録">
+                </div>
+            </div>
+        </div>
+        </form>
+    </main>
+</section>
+
+<!--<main>
+    <p>会員登録画面</p>
+    <form action="{% url 'regist_member' %}" method="post">
+        {% csrf_token %}
+        <label>{{ form.username.label }}: {{ form.username }}</label><br>
+        <label>{{ form.password1.label }}: {{ form.password1 }}</label><br>
+        <label>{{ form.password2.label }}: {{ form.password2 }}</label><br>
+        <label>{{ form.email.label }}: {{ form.email }}</label><br>
+        <label>{{ form.nickname.label }}: {{ form.nickname }}</label><br>
+        <label>{{ form.birthdate.label }}: {{ form.birthdate }}</label><br>
+        <label>{{ form.belongs_id.label }}{{ form.belongs_id }}</label><br>
+
+        <div class="modal-footer open">
+            <input type="button" name="regist" value="登録">
+            <input type="button" name="return" value="戻る">
+        </div>
+    </form>
+    <div class="message">{{form.errors}}</div>
+</main>-->
+
+<script>
+    $(function () {
+        // カレンダーを表示させる
+        $('[name=birthdate]').datepicker({
+            dateFormat: 'yy/mm/dd'
+        });
+
+        // 押下されたボタンによってform の action 先を動的に変更する
+        $("[name=regist]").click(function () {
+            // var checked_text = $("input[name='belongs']:checked").parent().text();
+            // $("[name='checked_belongs_text']").val(checked_text);
+            $("form").attr("action", "{% url 'regist_photograph' %}");
+            $("form").submit();
+        })
+
+        $("[name=return]").click(function () {
+            history.back()
+        })
+
+        $("[name=how_to_play]").click(function () {
+            $("form").attr("action", "{% url 'how_to_play' %}");
+            $("form").submit();
+        })
+
+        $("[name=login]").click(function () {
+            $("form").attr("action", "{% url 'login' %}");
+            $("form").submit();
+        })
+    })
+</script>
+{% endblock %}

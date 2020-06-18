@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}
+マイページ
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<div class="overlay">
+    {% include 'loading_parts.html' %}
+</div>
+
+<form action="" method="post">
+    {% csrf_token %}
+    <header>
+        <a href="./"><img src="{% static 'images/title-head.png' %}" alt="Youは何する偉人さん？"></a>
+        <ul class="header-nav">
+            <li class="arrow"><input type="button" name="how_to_play" value="ゲーム説明"></li>
+            <li class="arrow"><input type="button" name="logout" value="ログアウト"></li>
+        </ul>
+    </header>
+    <section id="mypage">
+
+        <div class="section-title">
+            <img src="{% static 'images/mypage-title.png' %}" alt="マイページ">
+        </div>
+
+        <main>
+            <div class="mypage-button">
+                <img src="{% static 'images/mypage-icon-taisen.png' %}" alt="対戦">
+                <input type="button" name="battle" value="偉人になる" class="button-outline">
+            </div>
+            <div class="mypage-button">
+                <img src="{% static 'images/mypage-icon-ranking.png' %}" alt="ランキング">
+                <input type="button" name="ranking" value="ランキングをみる" class="button-outline">
+            </div>
+            <div class="mypage-button">
+                <img src="{% static 'images/mypage-icon-howtoplay.png' %}" alt="ゲームの説明">
+                <input type="button" name="how_to_play" value="ゲームの説明をみる" class="button-outline">
+            </div>
+        </main>
+    </section>
+</form>
+
+
+
+<script>
+    $(function () {
+
+        // 初期表示ではオーバーレイを非表示とする
+        $('.overlay').css({
+            'display': 'none',
+            'z-index': -1
+        });
+
+        // 押下されたボタンによってform の action 先を動的に変更する
+        $("[name=battle]").click(function () {
+            // オーバーレイを表示してローディングサークルを表示する
+            $('.overlay').css({
+                'display': 'block',
+                'z-index': 2147483647
+            });
+
+            $("form").attr("action", "{% url 'recognize_ijin_image' %}");
+            $("form").submit();
+        })
+
+        $("[name=ranking]").click(function () {
+            $("form").attr("action", "{% url 'ranking' %}");
+            $("form").submit();
+        })
+
+        $("[name=how_to_play]").click(function () {
+            $("form").attr("action", "{% url 'how_to_play' %}");
+            $("form").submit();
+        })
+
+        $("[name=logout]").click(function () {
+            $("form").attr("action", "{% url 'logout' %}");
+            $("form").submit();
+        })
+    })
+</script>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+top
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<form action="" method="get">
+    {% csrf_token %}
+    <header>
+        <a href="./"><img src="{% static 'images/title-head.png' %}" alt="Youは何する偉人さん？"></a>
+        <ul class="header-nav">
+            <li class="arrow"><input type="button" name="how_to_play" value="ゲーム説明"></li>
+            <li class="arrow"><input type="button" name="login" value="ログイン"></li>
+        </ul>
+    </header>
+    <section id="top">
+        <div class="container">
+            <div class="ijin-icon-box">
+                <img src="{% static 'images/ijin-icon-ryoma.png' %}" alt="坂本龍馬">
+                <img src="{% static 'images/ijin-icon-masamune.png' %}" alt="伊達政宗">
+                <img src="{% static 'images/ijin-icon-hideyo.png' %}" alt="野口英世">
+            </div>
+            <div class="main">
+                <div class="title-container">
+                    <img src="{% static 'images/title.png' %}" alt="Youは何した偉人さん？">
+                </div>
+                <div class="top-copy">
+                    <img src="{% static 'images/top-copy.png' %}" alt="君に似ている偉人はだれかな？">   
+                </div>
+                <div class="top-button">
+                    <input type="image" src="{% static 'images/top-start-button.png' %}" name="regist" value="ログイン">
+                </div>
+            </div>
+            <div class="ijin-icon-box">
+                <img src="{% static 'images/ijin-icon-nobunaga.png' %}" alt="織田信長">
+                <img src="{% static 'images/ijin-icon-ieyasu.png' %}" alt="徳川家康">
+                <img src="{% static 'images/ijin-icon-shikibu.png' %}" alt="紫式部">
+            </div>
+        </div>
+    </section>
+</form>
+
+<!--<main>
+    <p>偉人ゲームアプリTOP画面</p>
+    <form action="" method="get">
+        {% csrf_token %}
+
+        <input type="button" name="how_to_play" value="ゲーム説明">
+        <input type="button" name="regist" value="会員登録">
+        <input type="button" name="login" value="ログイン">
+    </form>
+</main>-->
+
+<script>
+    $(function () {
+        // 押下されたボタンによってform の action 先を動的に変更する
+        $("[name=how_to_play]").click(function () {
+            $("form").attr("action", "{% url 'how_to_play' %}");
+            $("form").submit();
+        })
+
+        $("[name=regist]").click(function () {
+            $("form").attr("action", "{% url 'regist_member' %}");
+            $("form").submit();
+        })
+
+        $("[name=login]").click(function () {
+            $("form").attr("action", "{% url 'login' %}");
+            $("form").submit();
+        })
+    })
+</script>
+{% endblock %}

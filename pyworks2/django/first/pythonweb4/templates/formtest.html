@@ -1,0 +1,28 @@
+<!--  
+form
+    action
+    method
+    {% csrf_token %}
+
+actionの考察
+    {% url 'formtest' %}
+
+methodの考察
+　method = "post"がないと記録されない
+aaa -->
+
+
+
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <p>{{insert_data|safe}}</p>
+        <form action="{% url 'formtest' %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="送信">
+        </form>
+    </body>
+</html>

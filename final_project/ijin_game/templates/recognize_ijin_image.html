@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}
+偉人画像認識
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <header>
+        <a href="./"><img src="{% static 'images/title-head.png' %}" alt="Youは何する偉人さん？"></a>
+        <ul class="header-nav">
+            <li class="arrow"><input type="button" name="how_to_play" value="ゲーム説明"></li>
+            <li class="arrow"><input type="button" name="logout" value="ログアウト"></li>
+        </ul>
+    </header>
+    <section id="recognize_ijin_image">
+        <div class="section-title">
+            <img src="{% static 'images/recognize-title.png' %}" alt="ステージ1 顔で勝負">
+        </div>
+        <main>
+            <div class="ijin-name-wrap">
+                <p>{{username}}さんに一番似ている偉人は</p>
+                <p>&nbsp;<span class="ijin-name">{{ijin_name}}</span>&nbsp;</p>
+            </div>
+            <div class="ijin-container">
+                <div class="ijin-image">
+                    <img src="../media/cnn_data/ijin/{{ijin_image_name}}.jpg">
+                </div>
+                <div class="ijin-image-result">
+                    <table class="ijin-table">
+                        <tr>
+                            <th>{{ijin_name}}度</th>
+                        </tr>
+                        <tr>
+                            <td><span class="ijin-percentage">{{percentage}}</span>&nbsp;点<br><strong>獲得</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="button-wrap">
+                <input type="image" src="{% static 'images/button-next.png' %}" name="next" value="次へ">
+            </div>
+        </main>
+    </section>
+</form>
+
+
+<!--
+<main>
+    <p>偉人画像認識画面</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        <img src="../media/cnn_data/ijin/{{ijin_image_name}}.jpg">
+        <p>損失：{{loss}}</p>
+        <p>正確さ：{{accuracy}}</p>
+        <p>似ている偉人：{{ijin_name}}</p>
+        <p>確率：{{percentage}}</p>
+
+        <input type="button" name="next" value="次へ">
+        <input type="button" name="return" value="戻る">
+    </form>
+</main>-->
+
+<script>
+    $(function () {
+        // 押下されたボタンによってform の action 先を動的に変更する
+        $("[name=next]").click(function () {
+            $("form").attr("action", "{% url 'generate_ijin_sentence' %}");
+            $("form").submit();
+        })
+
+        $("[name=how_to_play]").click(function () {
+            $("form").attr("action", "{% url 'how_to_play' %}");
+            $("form").submit();
+        })
+
+        $("[name=logout]").click(function () {
+            $("form").attr("action", "{% url 'logout' %}");
+            $("form").submit();
+        })
+    })
+</script>
+{% endblock %}

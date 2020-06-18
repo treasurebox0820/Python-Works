@@ -1,0 +1,2 @@
+cnn_data, userをフォルダごとこの階層に配置
+https://drive.google.com/drive/folders/1vGPox7w1FDzRgQx_bEiYe7tpz_ePa6kN

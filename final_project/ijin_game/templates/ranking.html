@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ランキング
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <header>
+        <a href="./"><img src="{% static 'images/title-head.png' %}" alt="Youは何する偉人さん？"></a>
+        <ul class="header-nav">
+            <li class="arrow"><input type="button" name="how_to_play" value="ゲーム説明"></li>
+            <li class="arrow"><input type="button" name="logout" value="ログアウト"></li>
+        </ul>
+    </header>
+    <section id="ranking">
+        <div class="section-title">
+            <img src="{% static 'images/ranking-title.png' %}" alt="ランキング">
+        </div>
+        <main>
+            <div class="ranking-wrap">
+                <table>
+                    {% for user_dict in all_member|slice:":10" %}
+                    <tr>
+                        <th>{{forloop.counter}}位</th>
+                        <td>{{user_dict.user}}</td>
+                        <td>{{user_dict.score}}点</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div class="button-wrap">
+                <input type="image" src="{% static 'images/button-mypage.png' %}" name="return_mypage" value="マイページへ">
+            </div>
+        </main>
+    </section>
+</form>
+<!--<main>
+    <p>ランキング表示画面</p>
+    <form action="" method="post">
+        {% csrf_token %}
+        {% for user_dict in all_member|slice:":10" %}
+        {{forloop.counter}}位 {{user_dict.user}} {{user_dict.score}}点<br>
+        {% endfor %}
+
+        <input type="submit" name="return_mypage" value="マイページへ戻る">
+    </form>
+</main>-->
+
+<script>
+    $(function () {
+        // 押下されたボタンによってform の action 先を動的に変更する
+        $("[name=return_mypage]").click(function () {
+            $("form").attr("action", "{% url 'mypage' %}");
+            $("form").submit();
+        })
+        $("[name=how_to_play]").click(function () {
+            $("form").attr("action", "{% url 'how_to_play' %}");
+            $("form").submit();
+        })
+
+        $("[name=logout]").click(function () {
+            $("form").attr("action", "{% url 'logout' %}");
+            $("form").submit();
+        })
+    })
+</script>
+{% endblock %}

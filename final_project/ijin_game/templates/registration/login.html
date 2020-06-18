@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}
+ログイン
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <header>
+        <a href="./"><img src="{% static 'images/title-head.png' %}" alt="Youは何する偉人さん？"></a>
+        <ul class="header-nav">
+            <li class="arrow"><input type="button" name="how_to_play" value="ゲーム説明"></li>
+        </ul>
+    </header>
+</form>
+<section id="login">
+    <div class="section-title">
+        <img src="{% static 'images/login-title.png' %}" alt="ログイン">
+    </div>
+    <main>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="login_form">
+
+                {% if form.errors %}
+                <p class="error-message">ユーザ名またはパスワードが一致しません。再度入力してください。</p>
+                {% endif %}
+                {% if next %}
+                {% if user.is_authenticated %}
+                <p class="error-message">あなたのアカウントはこのページへのアクセス権限がありません。
+                    アクセス権限のあるアカウントでログインしてください。</p>
+                {% else %}
+                <p class="error-message">ログインしてください。</p>
+                {% endif %}
+                {% endif %}
+
+                <div class="login_user">
+                    <p>{{ form.username.label_tag }}</p>
+                    <p>{{ form.username }}</p>
+                </div>
+                <div class="login_password">
+                    <p>{{ form.password.label_tag }}</p>
+                    <p>{{ form.password }}</p>
+                </div>
+                <p class="forgotpass"><a href="{% url 'password_reset' %}">パスワードを忘れてしまいましたか？</a></p>
+                <div class="button-wrap">
+                    <input type="image" src="{% static 'images/button-login.png' %}" value="login">
+                    <input type="hidden" name="next" value="{{ next }}">
+                </div>
+            </div>
+        </form>
+    </main>
+</section>
+
+<!--<main>
+    <p>ログイン画面</p>
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="login_form">
+            <div class="login_user">
+                <p>{{ form.username.label_tag }}</p>
+                <p>{{ form.username }}</p>
+            </div>
+            <div class="login_password">
+                <p>{{ form.password.label_tag }}</p>
+                <p>{{ form.password }}</p>
+            </div>
+            <input type="submit" value="login">
+            <input type="hidden" name="next" value="{{ next }}">
+        </div>
+    </form>
+
+    {# URLconf で password_reset ビューを設定していることを前提とする #}
+    <p><a href="{% url 'password_reset' %}">パスワードを忘れてしまいましたか？</a></p>
+
+    <div class="message">
+        {% if form.errors %}
+        <p>ユーザ名またはパスワードが一致しません。再度入力してください。</p>
+        {% endif %}
+
+        {% if next %}
+        {% if user.is_authenticated %}
+        <p>あなたのアカウントはこのページへのアクセス権限がありません。
+            アクセス権限のあるアカウントでログインしてください。</p>
+        {% else %}
+        <p>ログインしてください。</p>
+        {% endif %}
+        {% endif %}
+    </div>
+</main>-->
+<script>
+    $(function () {
+        $("[name=how_to_play]").click(function () {
+            $("form").attr("action", "{% url 'how_to_play' %}");
+            $("form").submit();
+        })
+    })
+</script>
+{% endblock %}

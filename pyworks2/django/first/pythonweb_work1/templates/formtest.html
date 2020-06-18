@@ -1,0 +1,13 @@
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <p>{{insert_data|safe}}</p>
+        <form action="{% url 'formtest' %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="送信">
+        </form>
+    </body>
+</html>

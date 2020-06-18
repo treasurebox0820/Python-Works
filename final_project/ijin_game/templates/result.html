@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ゲームスコア表示
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    <header>
+        <a href="./"><img src="{% static 'images/title-head.png' %}" alt="Youは何する偉人さん？"></a>
+        <ul class="header-nav">
+            <li class="arrow"><input type="button" name="how_to_play" value="ゲーム説明"></li>
+            <li class="arrow"><input type="button" name="logout" value="ログアウト"></li>
+        </ul>
+    </header>
+    <section id="result">
+        <div class="section-title">
+            <img src="{% static 'images/result-title.png' %}" alt="偉人度判定">
+        </div>
+        <main>
+            <div class="ijin-name-wrap">
+                <p>Youの&nbsp;<span class="ijin-name">{{ijin_name}}</span>&nbsp;度は・・・</p>
+            </div>
+            <div class="ijin-container">
+                <div class="ijin-container">
+                    <div class="result-messagebox">
+                        <span class="box-title">You&nbsp;へ</span>
+                        <p>{{message}}</p>
+                    </div>
+                    <table class="result-table">
+                        <tr>
+                            <th>顔</th>
+                            <td><span class="">{{cnn_score}}</span>&nbsp;点</td>
+                            <th>知識</th>
+                            <td><span class="">{{score}}</span>&nbsp;点</td>
+                        </tr>
+                        <tr>
+                            <th colspan="4" class="allscore">{{ijin_name}}度</th>
+                        </tr>
+                        <tr>
+                            <td colspan="4"><span class="ijin-percentage">{{total_score}}</span>&nbsp;点</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="button-wrap">
+                <input type="image" src="{% static 'images/button-mypage.png' %}" name="return_mypage" value="マイページへ">
+            </div>
+        </main>
+    </section>
+</form>
+<!--<main>
+    <p>ゲームスコア表示画面</p>
+    <form action="" method="post">
+        {% csrf_token %}
+
+        <p>
+            <h2>あなたの{{ijin_name}}なりきりスコアは・・・<br>
+                顔：{{cnn_score}} 点<br>
+                表現力：{{score}} 点<br>
+            </h2>
+            <h1>総合スコア：{{total_score}} 点<br>
+            </h1>
+        </p>
+
+        <p>{{message}}</p>
+
+        <input type="button" name="return_mypage" value="マイページへ戻る">
+
+        実装が全て完了したら、入力画面へ戻るボタンは削除
+        <input type="button" name="return" value="戻る">
+    </form>
+</main>-->
+
+<script>
+    $(function () {
+        // 押下されたボタンによってform の action 先を動的に変更する
+        $("[name=return_mypage]").click(function () {
+            $("form").attr("action", "{% url 'mypage' %}");
+            $("form").submit();
+        })
+
+        $("[name=return]").click(function () {
+            history.back()
+        })
+
+        $("[name=how_to_play]").click(function () {
+            $("form").attr("action", "{% url 'how_to_play' %}");
+            $("form").submit();
+        })
+
+        $("[name=logout]").click(function () {
+            $("form").attr("action", "{% url 'logout' %}");
+            $("form").submit();
+        })
+    })
+</script>
+{% endblock %}
