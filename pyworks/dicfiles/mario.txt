@@ -1,0 +1,9 @@
+Mario:マリオ
+Luigi:ルイージ
+Wario:ワリオ
+waLuigi:ワルイージ
+Yoshi:ヨッシー
+Peach:ピーチ
+DK:ドンキーコング
+Bowser:クッパ
+Boo:テレサ

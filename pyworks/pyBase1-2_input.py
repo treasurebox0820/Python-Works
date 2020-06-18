@@ -1,0 +1,6 @@
+first = input("最初の数字を入力：")
+second = input("次の数値入力　　：")
+print(first)
+print(second)
+print(first+second)
+print(int(first) + int(second))
